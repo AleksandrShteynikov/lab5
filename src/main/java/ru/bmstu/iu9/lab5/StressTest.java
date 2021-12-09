@@ -1,2 +1,4 @@
-package ru.bmstu.iu9.lab5;public class StressTest {
+package ru.bmstu.iu9.lab5;
+
+public class StressTest {
 }
