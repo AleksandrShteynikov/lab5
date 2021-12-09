@@ -1,7 +1,9 @@
 package ru.bmstu.iu9.lab5;
 
 import akka.NotUsed;
+import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import akka.actor.Props;
 import akka.http.javadsl.ConnectHttp;
 import akka.http.javadsl.Http;
 import akka.http.javadsl.ServerBinding;
@@ -27,10 +29,11 @@ public class StressTest {
 
     public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(AKKA_SYSTEM_NAME);
+        ActorRef cacheActor = system.actorOf(Props.create(CacheActor.class));
         final Http http = Http.get(system);
         final ActorMaterializer materializer = ActorMaterializer.create(system);
         StressTest instance = new StressTest();
-        final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = instance.flow();
+        final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = instance.flow(cacheActor);
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(routeFlow,
                                                                           ConnectHttp.toHost(HOST_NAME, PORT),
                                                                           materializer);
@@ -38,7 +41,7 @@ public class StressTest {
         binding.thenCompose(ServerBinding::unbind).thenAccept(unbound -> system.terminate());
     }
 
-    private Flow<HttpRequest, HttpResponse, NotUsed> flow() {
+    private Flow<HttpRequest, HttpResponse, NotUsed> flow(ActorRef actor) {
         return Flow.of(HttpRequest.class)
                 .map(req -> {
                     Query queries = req.getUri().query();
