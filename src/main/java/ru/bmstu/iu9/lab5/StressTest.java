@@ -17,6 +17,7 @@ public class StressTest {
     private final static int PORT = 8080;
     private final static String HOST_NAME = "localhost";
     private final static String AKKA_SYSTEM_NAME = "AkkaStressTester";
+    private final static String SERVER_MSG = "Server online at http://" + HOST_NAME + ":" + PORT +"/\nPress RETURN to stop...";
 
     public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(AKKA_SYSTEM_NAME);
@@ -27,6 +28,6 @@ public class StressTest {
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(routeFlow,
                                                                           ConnectHttp.toHost(HOST_NAME, PORT),
                                                                           materializer);
-
+        System.out.println(SERVER_MSG);
     }
 }
