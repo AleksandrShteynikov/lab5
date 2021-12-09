@@ -39,9 +39,9 @@ public class StressTest {
         return Flow.of(HttpRequest.class)
                 .map(req -> {
                     Query queries = req.getUri().query();
-                    String url = queries.get(URL_QUERY_KEY);
-                    String count = queries.get(COUNT_QUERY_KEY);
-                    
+                    String url = queries.get(URL_QUERY_KEY).get();
+                    String count = queries.get(COUNT_QUERY_KEY).get();
+
                 })
                 .mapAsync()
                 .map()
