@@ -8,6 +8,7 @@ import akka.http.javadsl.ServerBinding;
 import akka.http.javadsl.model.HttpRequest;
 import akka.http.javadsl.model.HttpResponse;
 import akka.http.javadsl.model.Query;
+import akka.japi.Pair;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 
@@ -21,7 +22,8 @@ public class StressTest {
     private final static String SERVER_MSG = "Server online at http://" + HOST_NAME + ":" + PORT +"/\nPress RETURN to stop...";
     private final static String URL_QUERY_KEY = "testUrl";
     private final static String COUNT_QUERY_KEY = "count";
-    private final static String DEFAULT_URL = "htt"
+    private final static String DEFAULT_URL = "https://yandex.ru";
+    private final static String DEFAULT_COUNT = "0";
 
     public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(AKKA_SYSTEM_NAME);
@@ -40,14 +42,16 @@ public class StressTest {
         return Flow.of(HttpRequest.class)
                 .map(req -> {
                     Query queries = req.getUri().query();
-                    String url =
+                    String url = DEFAULT_URL;
+                    String countS = DEFAULT_COUNT;
                     if (queries.get(URL_QUERY_KEY).isPresent()) {
                         url = queries.get(URL_QUERY_KEY).get();
                     }
                     if (queries.get(COUNT_QUERY_KEY).isPresent()) {
-                        count = queries.get(COUNT_QUERY_KEY).get();
+                        countS = queries.get(COUNT_QUERY_KEY).get();
                     }
-
+                    int count = Integer.parseInt(countS);
+                    return new Pair<>(url, count);
                 })
                 .mapAsync()
                 .map()
