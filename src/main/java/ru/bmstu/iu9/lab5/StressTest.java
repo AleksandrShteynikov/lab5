@@ -24,7 +24,7 @@ public class StressTest {
         final Http http = Http.get(system);
         final ActorMaterializer materializer = ActorMaterializer.create(system);
 
-        final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = ;
+        final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = flow;
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(routeFlow,
                                                                           ConnectHttp.toHost(HOST_NAME, PORT),
                                                                           materializer);
@@ -32,5 +32,10 @@ public class StressTest {
         binding.thenCompose(ServerBinding::unbind).thenAccept(unbound -> system.terminate());
     }
 
-    private Flow<HttpRequest, HttpResponse, NotUsed> 
+    private Flow<HttpRequest, HttpResponse, NotUsed> flow() {
+        return Flow.of(HttpRequest.class)
+                .map()
+                .mapAsync()
+                .map()
+    }
 }
