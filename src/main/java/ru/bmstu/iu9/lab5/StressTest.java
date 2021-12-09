@@ -58,7 +58,7 @@ public class StressTest {
                 })
                 .mapAsync()
                 .map(resp -> {
-
+                    actor.tell(new Result());
                 })
     }
 }
