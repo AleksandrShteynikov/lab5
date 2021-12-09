@@ -58,7 +58,8 @@ public class StressTest {
                 })
                 .mapAsync()
                 .map(resp -> {
-                    actor.tell(new Result());
-                })
+                    actor.tell(new Result(), ActorRef.noSender());
+                    
+                });
     }
 }
