@@ -57,6 +57,8 @@ public class StressTest {
                     return new Pair<>(url, count);
                 })
                 .mapAsync()
-                .map()
+                .map(resp -> {
+
+                })
     }
 }
