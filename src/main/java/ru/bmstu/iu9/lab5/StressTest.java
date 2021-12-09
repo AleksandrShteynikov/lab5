@@ -21,6 +21,7 @@ public class StressTest {
     private final static String SERVER_MSG = "Server online at http://" + HOST_NAME + ":" + PORT +"/\nPress RETURN to stop...";
     private final static String URL_QUERY_KEY = "testUrl";
     private final static String COUNT_QUERY_KEY = "count";
+    private final static String DEFAULT_URL = "htt"
 
     public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(AKKA_SYSTEM_NAME);
@@ -39,8 +40,13 @@ public class StressTest {
         return Flow.of(HttpRequest.class)
                 .map(req -> {
                     Query queries = req.getUri().query();
-                    String url = queries.get(URL_QUERY_KEY).get();
-                    String count = queries.get(COUNT_QUERY_KEY).get();
+                    String url =
+                    if (queries.get(URL_QUERY_KEY).isPresent()) {
+                        url = queries.get(URL_QUERY_KEY).get();
+                    }
+                    if (queries.get(COUNT_QUERY_KEY).isPresent()) {
+                        count = queries.get(COUNT_QUERY_KEY).get();
+                    }
 
                 })
                 .mapAsync()
