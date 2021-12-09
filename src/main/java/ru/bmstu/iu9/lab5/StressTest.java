@@ -17,6 +17,7 @@ public class StressTest {
         ActorSystem system = ActorSystem.create(AKKA_SYSTEM_NAME);
         final Http http = Http.get(system);
         final ActorMaterializer materializer = ActorMaterializer.create(system);
+
         final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow =
     }
 }
