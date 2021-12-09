@@ -7,6 +7,7 @@ import akka.http.javadsl.Http;
 import akka.http.javadsl.ServerBinding;
 import akka.http.javadsl.model.HttpRequest;
 import akka.http.javadsl.model.HttpResponse;
+import akka.http.javadsl.model.Query;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 
@@ -34,7 +35,10 @@ public class StressTest {
 
     private Flow<HttpRequest, HttpResponse, NotUsed> flow() {
         return Flow.of(HttpRequest.class)
-                .map()
+                .map(req -> {
+                    Query queries = req.getUri().query();
+                    
+                })
                 .mapAsync()
                 .map()
     }
