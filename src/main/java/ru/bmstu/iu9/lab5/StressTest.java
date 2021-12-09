@@ -9,5 +9,6 @@ public class StressTest {
 
     public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(AKKA_SYSTEM_NAME);
+        
     }
 }
