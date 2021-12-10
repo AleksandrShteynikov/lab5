@@ -33,6 +33,7 @@ public class StressTest {
     private final static String COUNT_QUERY_KEY = "count";
     private final static String DEFAULT_URL = "https://yandex.ru";
     private final static String DEFAULT_COUNT = "0";
+    private final static String CONNECTOR = " : ";
 
     public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(AKKA_SYSTEM_NAME);
@@ -68,7 +69,7 @@ public class StressTest {
                                                            Timeout.create(Duration.ofMillis(TIMEOUT)))
                         .thenCompose(resp -> {
                             if (((Optional<Long>)resp).isPresent()) {
-                                return CompletableFuture.completedFuture()
+                                return CompletableFuture.completedFuture(req.first() + CONNECTOR + resp.get().toString);
                             } else {
 
                             }
