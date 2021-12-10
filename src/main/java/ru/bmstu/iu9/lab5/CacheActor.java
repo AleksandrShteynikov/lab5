@@ -15,7 +15,7 @@ public class CacheActor extends AbstractActor {
     public Receive createReceive() {
         return ReceiveBuilder.create()
                 .match(String.class, req -> getSender()
-                                            .tell(Optional.of(results.get(req)), self()))
+                                            .tell(Optional.ofNullable(results.get(req)), self()))
                 .match(Result.class, res -> {
                     results.put(res.getUrl(), res.getTime());
                 })
