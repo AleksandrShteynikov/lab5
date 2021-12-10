@@ -17,6 +17,9 @@ import akka.stream.javadsl.Flow;
 import akka.stream.javadsl.Keep;
 import akka.stream.javadsl.Sink;
 import akka.stream.javadsl.Source;
+import org.asynchttpclient.AsyncHttpClient;
+import org.asynchttpclient.Dsl;
+import org.asynchttpclient.Request;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -85,10 +88,12 @@ public class StressTest {
                                             return urls;
                                         })
                                         .mapAsync(req.second(), url -> {
-                                            return 1;
+                                            AsyncHttpClient client = Dsl.asyncHttpClient();
+                                            Request getRequest = Dsl.get(url).build();
+                                            
                                         })
-                                        .toMat(Sink.fold(0L, (res, next) -> res + next), Keep.right());
-                                return Source.from(Collections.singletonList())
+                                        .toMat(Sink.fold(0L, Long::sum), Keep.right());
+                                return Source.from(Collections.singletonList(req))
                                         .toMat(sink, Keep.right())
                                         .run(materializer);
                             }
