@@ -14,6 +14,7 @@ import akka.japi.Pair;
 import akka.pattern.Patterns;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
+import akka.util.Timeout;
 
 import java.io.IOException;
 import java.util.concurrent.CompletionStage;
@@ -21,6 +22,7 @@ import java.util.concurrent.CompletionStage;
 public class StressTest {
     private final static int PARALLELISM = 1;
     private final static int PORT = 8080;
+    private final static int TIMEOUT = 5000;
     private final static String HOST_NAME = "localhost";
     private final static String AKKA_SYSTEM_NAME = "AkkaStressTester";
     private final static String SERVER_MSG = "Server online at http://" + HOST_NAME + ":" + PORT +"/\nPress RETURN to stop...";
@@ -59,7 +61,7 @@ public class StressTest {
                     return new Pair<>(url, count);
                 })
                 .mapAsync(PARALLELISM, req -> {
-                    Patterns.ask(actor, req.first(), )
+                    Patterns.ask(actor, req.first(), new Timeout(TIMEOUT))
                 })
                 .map(resp -> {
                     actor.tell(new Result(), ActorRef.noSender());
