@@ -99,7 +99,7 @@ public class StressTest {
                                                    .thenCompose(res ->
                                                                 CompletableFuture.completedFuture(System.currentTimeMillis() - start));
                                         })
-                                        .toMat(Sink.fold(0L, (res, next) -> res + next), Keep.right());
+                                        .toMat(Sink.fold(0L, Long::sum), Keep.right());
                                 return Source.from(Collections.singletonList(req))
                                         .toMat(sink, Keep.right())
                                         .run(materializer);
