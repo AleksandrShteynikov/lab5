@@ -21,8 +21,6 @@ public class Result {
 
     @Override
     public String toString() {
-        return "Result{" +
-                "url='" + url + '\'' +
-                '}';
+        return url + CONNECTOR + time;
     }
 }
