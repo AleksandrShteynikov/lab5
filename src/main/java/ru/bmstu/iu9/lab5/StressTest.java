@@ -63,7 +63,9 @@ public class StressTest {
                 })
                 .mapAsync(PARALLELISM, req -> {
                     Patterns.ask(actor, req.first(), Timeout.create(Duration.ofMillis(TIMEOUT)))
-                    .thenCompose()
+                            .thenCompose(resp -> {
+                                
+                            })
                 })
                 .map(resp -> {
                     actor.tell(new Result(), ActorRef.noSender());
