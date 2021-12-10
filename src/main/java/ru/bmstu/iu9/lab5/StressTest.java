@@ -73,7 +73,7 @@ public class StressTest {
                             if (respOpt.isPresent()) {
                                 return CompletableFuture.completedFuture(req.first() + CONNECTOR + respOpt.get());
                             } else {
-                                Sink<Pair<String, Integer>> sink = Flow.<Pair<String, Integer>>create()
+                                Sink<Pair<String, Integer>, > sink = Flow.<Pair<String, Integer>>create()
                             }
                         }))
                 .map(resp -> {
