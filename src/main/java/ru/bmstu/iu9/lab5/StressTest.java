@@ -97,6 +97,7 @@ public class StressTest {
                                                                                              .toCompletableFuture();
                                             return CompletableFuture.completedFuture(whenResponse.thenCompose(res -> {
                                                 long duration = System.currentTimeMillis() - start;
+                                                return duration;
                                             }));
                                         })
                                         .toMat(Sink.fold(0L, Long::sum), Keep.right());
