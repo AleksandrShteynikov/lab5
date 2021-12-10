@@ -61,12 +61,11 @@ public class StressTest {
                     int count = Integer.parseInt(countS);
                     return new Pair<>(url, count);
                 })
-                .mapAsync(PARALLELISM, req -> {
-                    Patterns.ask(actor, req.first(), Timeout.create(Duration.ofMillis(TIMEOUT)))
-                            .thenCompose(resp -> {
-
-                            })
-                })
+                .mapAsync(PARALLELISM, req -> Patterns.ask(actor,
+                                                           req.first(),
+                                                           Timeout.create(Duration.ofMillis(TIMEOUT)))
+                        .thenCompose(resp -> {
+                        }))
                 .map(resp -> {
                     actor.tell(new Result(), ActorRef.noSender());
                     return HttpResponse.create().withEntity("");
