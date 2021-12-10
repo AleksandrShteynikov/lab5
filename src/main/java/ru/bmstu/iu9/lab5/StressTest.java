@@ -47,6 +47,7 @@ public class StressTest {
                                                                           ConnectHttp.toHost(HOST_NAME, PORT),
                                                                           materializer);
         System.out.println(SERVER_MSG);
+        System.in.read();
         binding.thenCompose(ServerBinding::unbind).thenAccept(unbound -> system.terminate());
     }
 
