@@ -16,9 +16,11 @@ import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 import akka.stream.javadsl.Keep;
 import akka.stream.javadsl.Sink;
+import akka.stream.javadsl.Source;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.CompletableFuture;
@@ -42,7 +44,7 @@ public class StressTest {
         final Http http = Http.get(system);
         final ActorMaterializer materializer = ActorMaterializer.create(system);
         StressTest instance = new StressTest();
-        final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = instance.flow(cacheActor);
+        final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = instance.flow(cacheActor, materializer);
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(routeFlow,
                                                                           ConnectHttp.toHost(HOST_NAME, PORT),
                                                                           materializer);
@@ -51,7 +53,7 @@ public class StressTest {
         binding.thenCompose(ServerBinding::unbind).thenAccept(unbound -> system.terminate());
     }
 
-    private Flow<HttpRequest, HttpResponse, NotUsed> flow(ActorRef actor) {
+    private Flow<HttpRequest, HttpResponse, NotUsed> flow(ActorRef actor, ActorMaterializer materializer) {
         return Flow.of(HttpRequest.class)
                 .map(req -> {
                     Query queries = req.getUri().query();
@@ -86,7 +88,9 @@ public class StressTest {
 
                                         })
                                         .toMat(Sink.fold(0L, (res, next) -> res + next), Keep.right());
-
+                                return Source.from(Collections.singletonList())
+                                        .toMat(sink, Keep.right())
+                                        .run(materializer);
                             }
                         }))
                 .map(resp -> {
