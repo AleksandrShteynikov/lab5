@@ -69,8 +69,8 @@ public class StressTest {
                                                            java.time.Duration.ofMillis(TIMEOUT))
                         .thenCompose(resp -> {
                             Optional<Long> respOpt = (Optional<Long>) resp;
-                            if (((Optional<Long>)resp).isPresent()) {
-                                return CompletableFuture.completedFuture(req.first() + CONNECTOR + resp.get().toString());
+                            if (respOpt.isPresent()) {
+                                return CompletableFuture.completedFuture(req.first() + CONNECTOR + respOpt.get());
                             } else {
 
                             }
