@@ -83,8 +83,11 @@ public class StressTest {
                                             }
                                             return urls;
                                         })
-                                        .mapAsync(req.second(), )
+                                        .mapAsync(req.second(), url -> {
+
+                                        })
                                         .toMat(Sink.fold(0L, (res, next) -> res + next), Keep.right());
+                                
                             }
                         }))
                 .map(resp -> {
