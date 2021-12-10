@@ -92,8 +92,10 @@ public class StressTest {
                                         .mapAsync(req.second(), url -> {
                                             AsyncHttpClient client = Dsl.asyncHttpClient();
                                             Request getRequest = Dsl.get(url).build();
-                                            CompletableFuture<Response> whenResponse = client.executeRequest(getRequest);
-
+                                            CompletableFuture<Response> whenResponse = client.executeRequest(getRequest)
+                                                                                             .toCompletableFuture();
+                                            res = whenResponse.thenCompose();
+                                            return res;
                                         })
                                         .toMat(Sink.fold(0L, Long::sum), Keep.right());
                                 return Source.from(Collections.singletonList(req))
