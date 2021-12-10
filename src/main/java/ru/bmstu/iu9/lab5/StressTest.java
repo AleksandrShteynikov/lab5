@@ -92,11 +92,11 @@ public class StressTest {
                                         .mapAsync(req.second(), url -> {
                                             AsyncHttpClient client = Dsl.asyncHttpClient();
                                             Request getRequest = Dsl.get(url).build();
-                                            start
+                                            long start = System.currentTimeMillis();
                                             CompletableFuture<Response> whenResponse = client.executeRequest(getRequest)
                                                                                              .toCompletableFuture();
                                             return CompletableFuture.completedFuture(whenResponse.thenCompose(res -> {
-
+                                                long duration = System.currentTimeMillis() - start;
                                             }));
                                         })
                                         .toMat(Sink.fold(0L, Long::sum), Keep.right());
