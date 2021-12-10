@@ -76,14 +76,14 @@ public class StressTest {
                                 return CompletableFuture.completedFuture(req.first() + CONNECTOR + respOpt.get());
                             } else {
                                 Sink<Pair<String, Integer>, CompletionStage<Long>> sink = Flow.<Pair<String, Integer>>create()
-                                        .mapConcat(req -> {
+                                        .mapConcat(reqSink -> {
                                             ArrayList<String> urls = new ArrayList<>();
-                                            for (int i =0; i < req.second(); i++) {
-                                                urls.add(req.first());
+                                            for (int i =0; i < reqSink.second(); i++) {
+                                                urls.add(reqSink.first());
                                             }
                                             return urls;
                                         })
-                                        .mapAsync()
+                                        .mapAsync(req.second(), )
                                         .toMat(Sink.fold(0L, (res, next) -> res + next), Keep.right());
                             }
                         }))
