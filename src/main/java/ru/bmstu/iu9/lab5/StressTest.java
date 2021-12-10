@@ -25,10 +25,8 @@ import org.asynchttpclient.Response;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
 public class StressTest {
     private final static int PARALLELISM = 1;
@@ -77,8 +75,8 @@ public class StressTest {
                                                            req.first(),
                                                            java.time.Duration.ofMillis(TIMEOUT))
                         .thenCompose(resp -> {
-                            Optional<Long> respOpt = (Optional<Long>) resp;
-                            if (respOpt.isPresent()) {
+                            Answer respAnsw = 
+                            if (resp.getUrl()) {
                                 return CompletableFuture.completedFuture(req.first() + CONNECTOR + respOpt.get());
                             } else {
                                 Sink<Pair<String, Integer>, CompletionStage<Long>> sink = Flow.<Pair<String, Integer>>create()
