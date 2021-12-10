@@ -78,7 +78,10 @@ public class StressTest {
                                 Sink<Pair<String, Integer>, CompletionStage<Long>> sink = Flow.<Pair<String, Integer>>create()
                                         .mapConcat(req -> {
                                             ArrayList<String> urls = new ArrayList<>();
-                                            for ()
+                                            for (int i =0; i < req.second(); i++) {
+                                                urls.add(req.first());
+                                            }
+                                            return urls;
                                         })
                                         .mapAsync()
                                         .toMat(Sink.fold(0L, (res, next) -> res + next), Keep.right());
