@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class CacheActor extends AbstractActor {
-    
+
     private final Map<String, Long> results = new HashMap<>();
 
     @Override
