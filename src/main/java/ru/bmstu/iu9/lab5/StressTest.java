@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.concurrent.CompletionStage;
 
 public class StressTest {
+    private final static int PARALLELISM = 1;
     private final static int PORT = 8080;
     private final static String HOST_NAME = "localhost";
     private final static String AKKA_SYSTEM_NAME = "AkkaStressTester";
@@ -56,7 +57,9 @@ public class StressTest {
                     int count = Integer.parseInt(countS);
                     return new Pair<>(url, count);
                 })
-                .mapAsync()
+                .mapAsync(PARALLELISM, req -> {
+                    
+                })
                 .map(resp -> {
                     actor.tell(new Result(), ActorRef.noSender());
                     return HttpResponse.create().withEntity("");
