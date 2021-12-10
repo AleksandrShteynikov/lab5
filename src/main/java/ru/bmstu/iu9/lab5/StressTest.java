@@ -67,7 +67,7 @@ public class StressTest {
                                                            req.first(),
                                                            Timeout.create(Duration.ofMillis(TIMEOUT)))
                         .thenCompose(resp -> {
-                            if (Optional<>.isPresent) {
+                            if (((Optional<Long>) resp).isPresent()) {
 
                             } else {
 
