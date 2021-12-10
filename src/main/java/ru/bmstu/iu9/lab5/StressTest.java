@@ -95,6 +95,10 @@ public class StressTest {
                                             long start = System.currentTimeMillis();
                                             CompletableFuture<Response> whenResponse = client.executeRequest(getRequest)
                                                                                              .toCompletableFuture();
+                                            long duration = whenResponse.thenCompose(res -> {
+                                                long dur = System.currentTimeMillis() - start;
+                                                return dur;
+                                            };
                                             return CompletableFuture.completedFuture(whenResponse.thenCompose(res -> {
                                                 long duration = System.currentTimeMillis() - start;
                                                 return duration;
