@@ -14,6 +14,7 @@ import akka.japi.Pair;
 import akka.pattern.Patterns;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
+import akka.stream.javadsl.Keep;
 import akka.stream.javadsl.Sink;
 import akka.util.Timeout;
 
@@ -73,10 +74,11 @@ public class StressTest {
                             if (respOpt.isPresent()) {
                                 return CompletableFuture.completedFuture(req.first() + CONNECTOR + respOpt.get());
                             } else {
+                                Sink<>
                                 Sink<Pair<String, Integer>, CompletionStage<Long>> sink = Flow.<Pair<String, Integer>>create()
                                         .mapConcat()
                                         .mapAsync()
-                                        .toMat();
+                                        .toMat(fold, Keep.right());
                             }
                         }))
                 .map(resp -> {
