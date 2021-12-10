@@ -69,14 +69,13 @@ public class StressTest {
                         countS = queries.get(COUNT_QUERY_KEY).get();
                     }
                     int count = Integer.parseInt(countS);
-                    //System.out.println("\n" + url + "\n");
                     return new Pair<>(url, count);
                 })
                 .mapAsync(PARALLELISM, req -> Patterns.ask(actor,
                                                            req.first(),
                                                            java.time.Duration.ofMillis(TIMEOUT))
                         .thenCompose(resp -> {
-                            Answer respAnsw = (Answer) resp;
+                            Result respAnsw = (Result) resp;
                             if (!respAnsw.getUrl().isEmpty()) {
                                 return CompletableFuture.completedFuture(respAnsw.getUrl() + CONNECTOR + respAnsw.getTime());
                             } else {
