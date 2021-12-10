@@ -20,6 +20,7 @@ import akka.stream.javadsl.Source;
 import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.Dsl;
 import org.asynchttpclient.Request;
+import org.asynchttpclient.Response;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 public class StressTest {
     private final static int PARALLELISM = 1;
@@ -90,7 +92,7 @@ public class StressTest {
                                         .mapAsync(req.second(), url -> {
                                             AsyncHttpClient client = Dsl.asyncHttpClient();
                                             Request getRequest = Dsl.get(url).build();
-                                            
+                                            Future<Response> whenResponse = asyncHttpClient
                                         })
                                         .toMat(Sink.fold(0L, Long::sum), Keep.right());
                                 return Source.from(Collections.singletonList(req))
