@@ -16,10 +16,8 @@ import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 import akka.stream.javadsl.Keep;
 import akka.stream.javadsl.Sink;
-import akka.util.Timeout;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
@@ -87,7 +85,7 @@ public class StressTest {
 
                                         })
                                         .toMat(Sink.fold(0L, (res, next) -> res + next), Keep.right());
-                                
+
                             }
                         }))
                 .map(resp -> {
