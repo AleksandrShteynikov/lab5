@@ -77,7 +77,7 @@ public class StressTest {
                                 Sink<Pair<String, Integer>, CompletionStage<Long>> sink = Flow.<Pair<String, Integer>>create()
                                         .mapConcat()
                                         .mapAsync()
-                                        .toMat(Sink.fold(0L, (res, next) -> ), Keep.right());
+                                        .toMat(Sink.fold(0L, (res, next) -> res + next), Keep.right());
                             }
                         }))
                 .map(resp -> {
