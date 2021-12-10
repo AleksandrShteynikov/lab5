@@ -74,11 +74,10 @@ public class StressTest {
                             if (respOpt.isPresent()) {
                                 return CompletableFuture.completedFuture(req.first() + CONNECTOR + respOpt.get());
                             } else {
-                                Sink<>
                                 Sink<Pair<String, Integer>, CompletionStage<Long>> sink = Flow.<Pair<String, Integer>>create()
                                         .mapConcat()
                                         .mapAsync()
-                                        .toMat(fold, Keep.right());
+                                        .toMat(Sink.fold(), Keep.right());
                             }
                         }))
                 .map(resp -> {
