@@ -95,13 +95,12 @@ public class StressTest {
                                             long start = System.currentTimeMillis();
                                             CompletableFuture<Response> whenResponse = client.executeRequest(getRequest)
                                                                                              .toCompletableFuture();
-                                            completedDuration = whenResponse.thenCompose(res -> {
+                                            return whenResponse.thenCompose(res -> {
                                                 long duration = System.currentTimeMillis() - start;
                                                 return CompletableFuture.completedFuture(duration);
                                             });
-                                            return completedDuration;
                                         })
-                                        .toMat(Sink.fold(0L, Long::sum), Keep.right());
+                                        .toMat(Sink.fold(0L, ), Keep.right());
                                 return Source.from(Collections.singletonList(req))
                                         .toMat(sink, Keep.right())
                                         .run(materializer);
