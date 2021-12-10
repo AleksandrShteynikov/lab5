@@ -39,7 +39,6 @@ public class StressTest {
     private final static String COUNT_QUERY_KEY = "count";
     private final static String DEFAULT_URL = "https://yandex.ru";
     private final static String DEFAULT_COUNT = "1";
-    private final static String CONNECTOR = " : ";
 
     public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(AKKA_SYSTEM_NAME);
@@ -77,7 +76,7 @@ public class StressTest {
                         .thenCompose(resp -> {
                             Result respAnsw = (Result) resp;
                             if (!respAnsw.getUrl().isEmpty()) {
-                                return CompletableFuture.completedFuture(respAnsw.getUrl() + CONNECTOR + respAnsw.getTime());
+                                return CompletableFuture.completedFuture(new Result(respAnsw.getUrl(), respAnsw.getTime()));
                             } else {
                                 Sink<Pair<String, Integer>, CompletionStage<Long>> sink = Flow.<Pair<String, Integer>>create()
                                         .mapConcat(reqSink -> {
@@ -88,7 +87,6 @@ public class StressTest {
                                             return urls;
                                         })
                                         .mapAsync(req.second(), url -> {
-                                            //System.out.println("\n" + url + "\n");
                                             AsyncHttpClient client = Dsl.asyncHttpClient();
                                             Request getRequest = Dsl.get(url).build();
                                             long start = System.currentTimeMillis();
@@ -106,9 +104,8 @@ public class StressTest {
                             }
                         }))
                 .map(resp -> {
-                    System.out.println(resp);
                     actor.tell(resp, ActorRef.noSender());
-                    return HttpResponse.create().withEntity("");
+                    return HttpResponse.create().withEntity(resp.toString());
                 });
     }
 }

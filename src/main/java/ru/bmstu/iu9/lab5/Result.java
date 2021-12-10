@@ -1,6 +1,8 @@
 package ru.bmstu.iu9.lab5;
 
 public class Result {
+    private final static String CONNECTOR = " : ";
+
     private final String url;
     private final Long time;
 
@@ -15,5 +17,12 @@ public class Result {
 
     public Long getTime() {
         return time;
+    }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "url='" + url + '\'' +
+                '}';
     }
 }
