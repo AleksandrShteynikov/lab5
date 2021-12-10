@@ -66,7 +66,7 @@ public class StressTest {
                 })
                 .mapAsync(PARALLELISM, req -> Patterns.ask(actor,
                                                            req.first(),
-                                                           Timeout.create(Duration.ofMillis(TIMEOUT)))
+                                                           Timeout.create(Duration.ofMillis(TIMEOUT))).get()
                         .thenCompose(resp -> {
                             if (((Optional<Long>)resp).isPresent()) {
                                 return CompletableFuture.completedFuture(req.first() + CONNECTOR + resp.get().toString);
