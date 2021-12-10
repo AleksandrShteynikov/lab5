@@ -38,7 +38,7 @@ public class StressTest {
     private final static String URL_QUERY_KEY = "testUrl";
     private final static String COUNT_QUERY_KEY = "count";
     private final static String DEFAULT_URL = "https://yandex.ru";
-    private final static String DEFAULT_COUNT = "0";
+    private final static String DEFAULT_COUNT = "1";
     private final static String CONNECTOR = " : ";
 
     public static void main(String[] args) throws IOException {
@@ -69,6 +69,7 @@ public class StressTest {
                         countS = queries.get(COUNT_QUERY_KEY).get();
                     }
                     int count = Integer.parseInt(countS);
+                    //System.out.println("\n" + url + "\n");
                     return new Pair<>(url, count);
                 })
                 .mapAsync(PARALLELISM, req -> Patterns.ask(actor,
@@ -88,6 +89,7 @@ public class StressTest {
                                             return urls;
                                         })
                                         .mapAsync(req.second(), url -> {
+                                            //System.out.println("\n" + url + "\n");
                                             AsyncHttpClient client = Dsl.asyncHttpClient();
                                             Request getRequest = Dsl.get(url).build();
                                             long start = System.currentTimeMillis();
@@ -105,6 +107,7 @@ public class StressTest {
                             }
                         }))
                 .map(resp -> {
+                    System.out.println(resp);
                     actor.tell(resp, ActorRef.noSender());
                     return HttpResponse.create().withEntity("");
                 });

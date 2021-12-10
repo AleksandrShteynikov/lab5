@@ -16,9 +16,9 @@ public class CacheActor extends AbstractActor {
         return ReceiveBuilder.create()
                 .match(String.class, req -> {
                     if (results.containsKey(req)) {
-                        getSender().tell(new Answer(req, results.get(req)), self());
+                        getSender().tell(new Result(req, results.get(req)), self());
                     } else {
-                        getSender().tell(new Answer(EMPTY, results.get(req)), self());
+                        getSender().tell(new Result(EMPTY, results.get(req)), self());
                     }
                 })
                 .match(Result.class, res -> {
