@@ -21,6 +21,7 @@ import java.util.concurrent.CompletionStage;
 public class StressTest {
     private final static int PARALLELISM = 1;
     private final static int PORT = 8080;
+    private final static String CONN = "|";
     private final static String HOST_NAME = "localhost";
     private final static String AKKA_SYSTEM_NAME = "AkkaStressTester";
     private final static String SERVER_MSG = "Server online at http://" + HOST_NAME + ":" + PORT +"/\nPress RETURN to stop...";
