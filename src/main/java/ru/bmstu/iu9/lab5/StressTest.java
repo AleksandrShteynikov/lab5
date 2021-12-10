@@ -85,7 +85,7 @@ public class StressTest {
                                             return urls;
                                         })
                                         .mapAsync(req.second(), url -> {
-
+                                            return 1;
                                         })
                                         .toMat(Sink.fold(0L, (res, next) -> res + next), Keep.right());
                                 return Source.from(Collections.singletonList())
