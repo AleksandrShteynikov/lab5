@@ -102,11 +102,12 @@ public class StressTest {
                                         .toMat(Sink.fold(0L, Long::sum), Keep.right());
                                 return Source.from(Collections.singletonList(req))
                                         .toMat(sink, Keep.right())
-                                        .run(materializer);
+                                        .run(materializer)
+                                        .thenApply(sum -> new Result(req.first(), sum / req.second()));
                             }
                         }))
                 .map(resp -> {
-                    actor.tell(new Result(), ActorRef.noSender());
+                    actor.tell(resp, ActorRef.noSender());
                     return HttpResponse.create().withEntity("");
                 });
     }
