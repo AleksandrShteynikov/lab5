@@ -17,6 +17,7 @@ import akka.stream.javadsl.Flow;
 import akka.util.Timeout;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.concurrent.CompletionStage;
 
 public class StressTest {
@@ -61,7 +62,8 @@ public class StressTest {
                     return new Pair<>(url, count);
                 })
                 .mapAsync(PARALLELISM, req -> {
-                    Patterns.ask(actor, req.first(), new Timeout(TIMEOUT))
+                    Patterns.ask(actor, req.first(), Timeout.create(Duration.ofMillis(TIMEOUT)))
+                            .thenCompose()
                 })
                 .map(resp -> {
                     actor.tell(new Result(), ActorRef.noSender());
