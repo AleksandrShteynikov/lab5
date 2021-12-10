@@ -20,6 +20,7 @@ import akka.util.Timeout;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.CompletableFuture;
@@ -75,7 +76,9 @@ public class StressTest {
                                 return CompletableFuture.completedFuture(req.first() + CONNECTOR + respOpt.get());
                             } else {
                                 Sink<Pair<String, Integer>, CompletionStage<Long>> sink = Flow.<Pair<String, Integer>>create()
-                                        .mapConcat()
+                                        .mapConcat(req -> {
+                                            ArrayList<String>
+                                        })
                                         .mapAsync()
                                         .toMat(Sink.fold(0L, (res, next) -> res + next), Keep.right());
                             }
