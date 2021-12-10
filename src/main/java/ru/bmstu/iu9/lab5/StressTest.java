@@ -70,7 +70,7 @@ public class StressTest {
                         .thenCompose(resp -> {
                             Optional<Long> respOpt = (Optional<Long>) resp;
                             if (((Optional<Long>)resp).isPresent()) {
-                                return CompletableFuture.completedFuture(req.first() + CONNECTOR + resp.get().toString);
+                                return CompletableFuture.completedFuture(req.first() + CONNECTOR + resp.get().toString());
                             } else {
 
                             }
