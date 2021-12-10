@@ -19,6 +19,7 @@ import akka.util.Timeout;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.CompletableFuture;
 
 public class StressTest {
     private final static int PARALLELISM = 1;
