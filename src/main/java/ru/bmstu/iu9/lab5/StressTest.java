@@ -75,9 +75,9 @@ public class StressTest {
                                                            req.first(),
                                                            java.time.Duration.ofMillis(TIMEOUT))
                         .thenCompose(resp -> {
-                            Answer respAnsw = 
-                            if (resp.getUrl()) {
-                                return CompletableFuture.completedFuture(req.first() + CONNECTOR + respOpt.get());
+                            Answer respAnsw = (Answer) resp;
+                            if (!respAnsw.getUrl().isEmpty()) {
+                                return CompletableFuture.completedFuture(respAnsw.getUrl() + CONNECTOR + respAnsw.getTime());
                             } else {
                                 Sink<Pair<String, Integer>, CompletionStage<Long>> sink = Flow.<Pair<String, Integer>>create()
                                         .mapConcat(reqSink -> {
