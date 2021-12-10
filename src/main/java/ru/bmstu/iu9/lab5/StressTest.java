@@ -68,6 +68,7 @@ public class StressTest {
                                                            req.first(),
                                                            Timeout.create(Duration.ofMillis(TIMEOUT))).get()
                         .thenCompose(resp -> {
+                            
                             if (((Optional<Long>)resp).isPresent()) {
                                 return CompletableFuture.completedFuture(req.first() + CONNECTOR + resp.get().toString);
                             } else {
