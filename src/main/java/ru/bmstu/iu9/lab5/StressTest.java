@@ -68,7 +68,7 @@ public class StressTest {
                                                            Timeout.create(Duration.ofMillis(TIMEOUT)))
                         .thenCompose(resp -> {
                             if (((Optional<Long>)resp).isPresent()) {
-                                return
+                                return CompletableFuture.completedFuture()
                             } else {
 
                             }
